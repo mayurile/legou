@@ -38,6 +38,12 @@ public class UserController {
         }
         return response;
     }
+
+    /**
+     * 注销
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "loginout.do",method = RequestMethod.GET)
     @ResponseBody
     public ServiceResponse<String> Logout(HttpSession session){
@@ -45,6 +51,12 @@ public class UserController {
         session.removeAttribute(Const.CURRENT_USER);
         return  ServiceResponse.createbysuccess();
     }
+
+    /**
+     * 注册新用户
+     * @param user
+     * @return
+     */
     @RequestMapping(value = "register.do",method = RequestMethod.GET)
     @ResponseBody
     public  ServiceResponse<String> register(User user){
@@ -80,14 +92,61 @@ public class UserController {
         return ServiceResponse.createbyerror("用户未登录，无法获取信息");
 
     }
+
+    /**
+     * 校验返回忘记密码的答案
+     * @param username
+     * @return
+     */
     @RequestMapping(value = "forgetquestion.do",method = RequestMethod.GET)
     @ResponseBody
     public ServiceResponse<String> forgetquestion(String username) {
         return iUserService.Forgetquestion(username);
     }
+
+    /**
+     * 校验问题答案
+     * @param username
+     * @param question
+     * @param answer
+     * @return
+     */
     @RequestMapping(value = "forgetcheckanswer.do",method = RequestMethod.GET)
     @ResponseBody
     public ServiceResponse<String> forgetcheckanswer(String username,String question,String answer){
         return iUserService.Checkanswer(username,question,answer);
+    }
+    @RequestMapping(value = "forgetresetpassword.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServiceResponse<String> forgetresetpassword(String username,String passwordNew,String forgetToken){
+        return iUserService.Resetpassword(username,passwordNew,forgetToken);
+    }
+    @RequestMapping(value = "resetpassword.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServiceResponse<String> resetpassword(HttpSession session,String passwordNew,String passwordold){
+        //从session里去User对象（强转换）
+        User user=(User)session.getAttribute(Const.CURRENT_USER);
+        //校验是否登录
+        if(user==null){
+            return  ServiceResponse.createbyerror("用户未登录");
+        }
+        return iUserService.ResetPasswordOL(user,passwordNew,passwordold);
+    }
+    @RequestMapping(value = "updateinfo.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServiceResponse<User> updateinfo(HttpSession session,User user){
+        //校验登录，只有在登录情况下才能更新用户信息
+        User currentuser=(User)session.getAttribute(Const.CURRENT_USER);
+        if(currentuser==null){
+            return  ServiceResponse.createbyerror("用户未登录");
+        }
+        user.setId(currentuser.getId());
+        ServiceResponse<User> response=iUserService.updateinfo(user);
+        //如果更新成功，将user赋予用户名并返回给前端
+        if(response.issuccess()){
+            response.getData().setUsername(currentuser.getUsername());
+            session.setAttribute(Const.CURRENT_USER,response.getData());
+        }
+        return response;
     }
 }

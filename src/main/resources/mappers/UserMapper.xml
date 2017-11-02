@@ -55,6 +55,20 @@
     and question = #{question}
     and answer = #{answer}
   </select>
+  <select id="checkpassword" parameterType="map" resultType="int">
+    SELECT
+    count(1)
+    FROM legouuser
+    where id = #{userid}
+    and password = #{password}
+  </select>
+  <select id="checkemailbyuserid" parameterType="map" resultType="int">
+    SELECT
+    count(1)
+    from legouuser
+    where id != #{userid}
+    and email = #{email}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from legouuser
     where id = #{id,jdbcType=INTEGER}
@@ -181,5 +195,11 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="resetpassword" parameterType="map">
+    update legouuser
+    set password = #{passwordnew},
+    update_time=now()
+    where username  = #{username,jdbcType=VARCHAR}
   </update>
 </mapper>
