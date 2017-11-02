@@ -1,6 +1,7 @@
 package com.legou.controller.portal;
 
 import com.legou.common.Const;
+import com.legou.common.ResponseCode;
 import com.legou.common.ServiceResponse;
 import com.legou.pojo.User;
 import com.legou.service.IUserService;
@@ -44,7 +45,7 @@ public class UserController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "loginout.do",method = RequestMethod.GET)
+    @RequestMapping(value = "loginout.do",method = RequestMethod.POST)
     @ResponseBody
     public ServiceResponse<String> Logout(HttpSession session){
         //将当前用户删除掉
@@ -57,7 +58,7 @@ public class UserController {
      * @param user
      * @return
      */
-    @RequestMapping(value = "register.do",method = RequestMethod.GET)
+    @RequestMapping(value = "register.do",method = RequestMethod.POST)
     @ResponseBody
     public  ServiceResponse<String> register(User user){
     return iUserService.register(user);
@@ -69,7 +70,7 @@ public class UserController {
      * @param type
      * @return
      */
-    @RequestMapping(value = "checkvalid.do",method = RequestMethod.GET)
+    @RequestMapping(value = "checkvalid.do",method = RequestMethod.POST)
     @ResponseBody
     public ServiceResponse<String> Checkvalid(String str,String type){
     return  iUserService.Checkvalid(str,type);
@@ -80,7 +81,7 @@ public class UserController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "get_user_info.do",method = RequestMethod.GET)
+    @RequestMapping(value = "get_user_info.do",method = RequestMethod.POST)
     @ResponseBody
     public ServiceResponse<User> getuserinfo(HttpSession session){
         User user=(User)session.getAttribute(Const.CURRENT_USER);
@@ -98,7 +99,7 @@ public class UserController {
      * @param username
      * @return
      */
-    @RequestMapping(value = "forgetquestion.do",method = RequestMethod.GET)
+    @RequestMapping(value = "forgetquestion.do",method = RequestMethod.POST)
     @ResponseBody
     public ServiceResponse<String> forgetquestion(String username) {
         return iUserService.Forgetquestion(username);
@@ -111,17 +112,17 @@ public class UserController {
      * @param answer
      * @return
      */
-    @RequestMapping(value = "forgetcheckanswer.do",method = RequestMethod.GET)
+    @RequestMapping(value = "forgetcheckanswer.do",method = RequestMethod.POST)
     @ResponseBody
     public ServiceResponse<String> forgetcheckanswer(String username,String question,String answer){
         return iUserService.Checkanswer(username,question,answer);
     }
-    @RequestMapping(value = "forgetresetpassword.do",method = RequestMethod.GET)
+    @RequestMapping(value = "forgetresetpassword.do",method = RequestMethod.POST)
     @ResponseBody
     public ServiceResponse<String> forgetresetpassword(String username,String passwordNew,String forgetToken){
         return iUserService.Resetpassword(username,passwordNew,forgetToken);
     }
-    @RequestMapping(value = "resetpassword.do",method = RequestMethod.GET)
+    @RequestMapping(value = "resetpassword.do",method = RequestMethod.POST)
     @ResponseBody
     public ServiceResponse<String> resetpassword(HttpSession session,String passwordNew,String passwordold){
         //从session里去User对象（强转换）
@@ -132,7 +133,7 @@ public class UserController {
         }
         return iUserService.ResetPasswordOL(user,passwordNew,passwordold);
     }
-    @RequestMapping(value = "updateinfo.do",method = RequestMethod.GET)
+    @RequestMapping(value = "updateinfo.do",method = RequestMethod.POST)
     @ResponseBody
     public ServiceResponse<User> updateinfo(HttpSession session,User user){
         //校验登录，只有在登录情况下才能更新用户信息
@@ -148,5 +149,15 @@ public class UserController {
             session.setAttribute(Const.CURRENT_USER,response.getData());
         }
         return response;
+    }
+    @RequestMapping(value = "getinfo.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServiceResponse<User> getinfo(HttpSession session,User user){
+        //校验登录，如果未登录需要强制登录
+        User currentuser=(User)session.getAttribute(Const.CURRENT_USER);
+        if(currentuser==null){
+            return  ServiceResponse.createbyerrorcodemessage(ResponseCode.NEED_LOGIN.getcode(),"未登录，需要强制登录");
+        }
+        return iUserService.getinfo(currentuser.getId());
     }
 }

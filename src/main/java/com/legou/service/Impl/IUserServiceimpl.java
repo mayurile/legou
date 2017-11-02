@@ -183,4 +183,15 @@ public class IUserServiceimpl implements IUserService {
 
     }
 
+    @Override
+    public ServiceResponse<User> getinfo(Integer userid) {
+        User user =userMapper.selectByPrimaryKey(userid);
+        if(user==null){
+            return ServiceResponse.createbyerror("找不到该用户");
+        }
+        user.setPassword(StringUtils.EMPTY);
+        return ServiceResponse.createbysuccess(user);
+    }
+
+
 }

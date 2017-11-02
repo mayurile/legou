@@ -23,7 +23,7 @@
     <dependency>
       <groupId>org.apache.tomcat</groupId>
       <artifactId>tomcat-servlet-api</artifactId>
-      <version>7.0.64</version>
+      <version>7.0.62</version>
     </dependency>
 
     <dependency>
@@ -250,7 +250,7 @@
 
 
   <build>
-    <finalName>mmall</finalName>
+    <finalName>legou</finalName>
     <plugins>
       <plugin>
         <groupId>org.mybatis.generator</groupId>
