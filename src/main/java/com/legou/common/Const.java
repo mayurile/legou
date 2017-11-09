@@ -18,6 +18,13 @@ public class Const {
         int ROLECOSTOMMER = 0;//普通用户
         int ROLEMANGER =1; //管理员
     }
+    public interface Cart{
+        int CHECK =0;//被选中
+        int UNCHECK=1;//未被选中
+
+        String LIMIT_NUM_FAIL="LIMIT_NUM_FAIL";
+        String LIMIT_NUM_SUCCESS="LIMIT_NUM_SUCCESS";
+    }
     public enum productstatusenum{
         ONSALE(1,"在线");
         ;
