@@ -21,6 +21,13 @@
     from legou_category
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectparentbyid" resultMap="BaseResultMap" parameterType="int">
+    SELECT
+    <include refid="Base_Column_List" />
+    from legou_category
+    where parent_id = #{parentid}
+
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from legou_category
     where id = #{id,jdbcType=INTEGER}

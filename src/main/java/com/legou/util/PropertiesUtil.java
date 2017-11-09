@@ -18,7 +18,7 @@ public class PropertiesUtil {
     private static Properties props;
 
     static {
-        String fileName = "mmall.properties";
+        String fileName = "legou.properties";
         props = new Properties();
         try {
             props.load(new InputStreamReader(PropertiesUtil.class.getClassLoader().getResourceAsStream(fileName),"UTF-8"));
@@ -28,6 +28,7 @@ public class PropertiesUtil {
     }
 
     public static String getProperty(String key){
+        //将key传过去
         String value = props.getProperty(key.trim());
         if(StringUtils.isBlank(value)){
             return null;

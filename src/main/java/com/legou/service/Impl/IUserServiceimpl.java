@@ -193,5 +193,13 @@ public class IUserServiceimpl implements IUserService {
         return ServiceResponse.createbysuccess(user);
     }
 
+    @Override
+    public ServiceResponse checkadminrole(User user){
+        if(user != null && user.getRole().intValue()==Const.Role.ROLEMANGER){
+            return ServiceResponse.createbysuccess();
+        }
+        return ServiceResponse.createbyerror();
+    }
+
 
 }

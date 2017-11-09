@@ -176,4 +176,40 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectList" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    FROM legou_product
+    order by id ASC
+
+    
+  </select>
+  <select id="selectbynameandid" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List" />
+    FROM legou_product
+    <where>
+    <if test="productname != null">
+     and name like #{productname}
+    </if>
+    <if test="productid != null">
+      and id = #{productid}
+    </if>
+    </where>
+  </select>
+  <select id="selectbycategoryidandname" resultMap="BaseResultMap" parameterType="map">
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM legou_product
+    WHERE 1=1
+    <if test="productname != null" >
+      and name like #{productname}
+    </if>
+    <if test="categoryidlist != null" >
+      and id IN 
+      <foreach item="item" index="index" open="(" separator="," close=")" collection="categoryidlist" >
+       #{item}
+      </foreach>
+    </if>
+  </select>
 </mapper>
