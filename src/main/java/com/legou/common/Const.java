@@ -41,4 +41,56 @@ public class Const {
             return code;
         }
     }
+    public enum Orderstatusenum{
+        CANCEL(0,"已取消"),
+        NOPAY(10,"未付款"),
+        UNDERPAY(20,"已付款"),
+        SHIPPID(30,"已发货"),
+        ORDER_SUCCESS(40,"订单完成"),
+        ORDER_CLOSED(50,"订单关闭")
+        ;
+        private String value;
+        private int code;
+
+        Orderstatusenum(int code,String value){
+            this.code=code;
+            this.value=value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public int getCode() {
+            return code;
+        }
+    }
+    public enum Payplatformenum{
+        ALIPAY(1,"支付宝")
+        ;
+
+        private String value;
+        private int code;
+
+        Payplatformenum(int code,String value){
+            this.code=code;
+            this.value=value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+    }
+    public interface AlipayCallback{
+        String TRADE_STATUS_WAIT_BUYER_PAY ="WAIT_BUYER_PAY";
+        String TRADE_STATUS_TRADE_SUCCESS ="TRADE_SUCCESS";
+
+        String RESPONSE_SUCCESS="success";
+        String RESPONSE_FAILED = "failed";
+    }
 }

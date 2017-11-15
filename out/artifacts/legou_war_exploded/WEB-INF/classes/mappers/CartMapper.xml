@@ -116,4 +116,52 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  
+  <select id="selectbyuseridandproductid" resultMap="BaseResultMap" parameterType="map">
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM legou_cart
+    WHERE product_id = #{productid}
+    and user_id = #{userid}
+  </select>
+
+  <select id="selectbyuserid" resultMap="BaseResultMap" parameterType="int">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM legou_cart
+    WHERE user_id = #{userid}
+  </select>
+  <select id="selectcartproductcheckstatus" resultType="int" parameterType="int">
+    SELECT
+    count(1)
+    FROM legou_cart
+    WHERE user_id = #{userid}
+    and checked=0
+  </select>
+  <delete id="deletebyuseridproductids" parameterType="map">
+   DELETE
+    FROM legou_cart
+    WHERE user_id = #{userid}
+    <if test="productids != null" >
+      and product_id IN
+      <foreach collection="productidList" open="(" separator="," close=")" index="index" item="item">
+        #{item}
+      </foreach>
+    </if>
+  </delete>
+  <update id="checkoruncheckedproduct" parameterType="map" >
+    UPDATE legou_cart
+    set checked = #{checked,jdbcType=INTEGER},
+    update_time = now(),
+    <if test="productid != null">
+    product_id = #{productid}
+    </if>
+    WHERE user_id = #{userid}
+  </update>
+  
+  <select id="selectcartcount" parameterType="int" resultType="int">
+    SELECT NULLIF(sum(quantity)) as COUNT FROM legou_cart
+    WHERE user_id = #{userid}
+  </select>
 </mapper>

@@ -198,4 +198,17 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectbyuseridandordernum" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List" />
+    from legou_order
+    WHERE order_no = #{orderno}
+    and user_id = #{userid}
+  </select>
+  <select id="selectbyorderno" resultMap="BaseResultMap" parameterType="long">
+    select
+    <include refid="Base_Column_List" />
+    from legou_order
+    WHERE order_no = #{orderno}
+  </select>
 </mapper>

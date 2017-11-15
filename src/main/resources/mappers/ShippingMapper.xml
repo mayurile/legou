@@ -176,4 +176,38 @@
       update_time =now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <update id="updatebyshipping" parameterType="com.legou.pojo.Shipping">
+    update legou_shipping
+    set receiver_name = #{receiverName,jdbcType=VARCHAR},
+      receiver_phone = #{receiverPhone,jdbcType=VARCHAR},
+      receiver_mobile = #{receiverMobile,jdbcType=VARCHAR},
+      receiver_province = #{receiverProvince,jdbcType=VARCHAR},
+      receiver_city = #{receiverCity,jdbcType=VARCHAR},
+      receiver_district = #{receiverDistrict,jdbcType=VARCHAR},
+      receiver_address = #{receiverAddress,jdbcType=VARCHAR},
+      receiver_zip = #{receiverZip,jdbcType=VARCHAR},
+      creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      update_time =now()
+    where id = #{id,jdbcType=INTEGER}
+    and user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <delete id="deletebyidanduserid" parameterType="map">
+    DELETE FROM legou_shipping
+    WHERE id = #{shippingid}
+    and user_id = #{userid}
+  </delete>
+
+  <select id="selectbyshippingidanduserid" parameterType="map" resultMap="BaseResultMap">
+    SELECT 
+    <include refid="Base_Column_List" />
+    from legou_shipping
+    WHERE id = #{shippingid}
+    and user_id = #{userid}
+  </select>
+  <select id="selectbyuserid" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    from legou_shipping
+    WHERE  user_id = #{userid}
+  </select>
 </mapper>
