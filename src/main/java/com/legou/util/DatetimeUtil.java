@@ -13,6 +13,7 @@ import java.util.Date;
 public class DatetimeUtil {
     //joda-time
     public static final String STANDARD_FORMAT="yyyy-MM-dd HH:mm:ss";
+    public static final String STANDARD_FORMAT_DATE="yyyy-mm-dd";
 
     //str->date
     public static Date strtodate(String dateTimestr,String formatStr){
@@ -40,5 +41,13 @@ public class DatetimeUtil {
         }
         DateTime dateTime=new DateTime(date);
         return dateTime.toString(STANDARD_FORMAT);
+    }
+    public static long datetolong(Date date){
+
+        if(date==null){
+            return 0;
+        }
+        long translatetime=date.getTime()/1000;
+        return translatetime;
     }
 }

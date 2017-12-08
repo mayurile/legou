@@ -205,10 +205,34 @@
     WHERE order_no = #{orderno}
     and user_id = #{userid}
   </select>
+  <select id="selectbyorderno" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List" />
+    from legou_order
+    WHERE order_no = #{orderno}
+  </select>
   <select id="selectbyorderno" resultMap="BaseResultMap" parameterType="long">
     select
     <include refid="Base_Column_List" />
     from legou_order
     WHERE order_no = #{orderno}
+  </select>
+  <delete id="deletebyOrderno" parameterType="map">
+    DELETE   from legou_order
+    where order_no = #{orderno}
+    and user_id = #{userid}
+  </delete>
+  <select id="selectbyuserid" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from legou_order
+    WHERE user_id = #{userid}
+    order by creat_time DESC
+  </select>
+  <select id="selectall" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from legou_order
+    order by creat_time DESC
   </select>
 </mapper>

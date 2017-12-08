@@ -137,7 +137,7 @@
     count(1)
     FROM legou_cart
     WHERE user_id = #{userid}
-    and checked=0
+    and checked = 0
   </select>
   <delete id="deletebyuseridproductids" parameterType="map">
    DELETE
@@ -163,5 +163,12 @@
   <select id="selectcartcount" parameterType="int" resultType="int">
     SELECT NULLIF(sum(quantity)) as COUNT FROM legou_cart
     WHERE user_id = #{userid}
+  </select>
+  <select id="selectbycheckanduserid" parameterType="int" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM legou_cart
+    WHERE  checked = 1
+    and user_id = #{userid}
   </select>
 </mapper>

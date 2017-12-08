@@ -171,4 +171,14 @@
     user_id = #{userid,jdbcType=INTEGER}
     and order_no = #{orderno}
   </select>
+  <insert id="Batchinsert" parameterType="map">
+    insert into legou_order_detail (id, order_no,user_id,
+      product_id, product_name, product_image,
+      current_unit_price, quantity, total_price,
+      create_time, update_time)
+    values
+    <foreach collection="orderItemList" index="index" item="item" separator=",">
+      (#{item.id},#{item.orderNo},#{item.userId},#{item.productId},#{item.productName},#{item.productImage},#{item.currentUnitPrice},#{item.quantity},#{totalPrice.id},now(),now())
+    </foreach>
+  </insert>
 </mapper>

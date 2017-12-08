@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServlet;
@@ -33,6 +34,80 @@ public class OrderController {
     private static final Logger logger= LoggerFactory.getLogger(OrderController.class);
     @Autowired
     private IOrderService iOrderService;
+
+    @RequestMapping("create.do")
+    @ResponseBody
+    public ServiceResponse create(HttpSession session,Integer shippingid){
+        User user=(User)session.getAttribute(Const.CURRENT_USER);
+        if(user==null){
+            return ServiceResponse.createbyerrorcodemessage(ResponseCode.NEED_LOGIN.getcode(),ResponseCode.NEED_LOGIN.getdesc());
+        }
+        return iOrderService.createorder(user.getId(),shippingid);
+    }
+
+    @RequestMapping("cancel.do")
+    @ResponseBody
+    public ServiceResponse cancel(HttpSession session,Long orderno){
+        User user=(User)session.getAttribute(Const.CURRENT_USER);
+        if(user==null){
+            return ServiceResponse.createbyerrorcodemessage(ResponseCode.NEED_LOGIN.getcode(),ResponseCode.NEED_LOGIN.getdesc());
+        }
+        return iOrderService.cancelorder(user.getId(),orderno);
+    }
+    @RequestMapping("get_cart_product_.do")
+    @ResponseBody
+    public ServiceResponse getcartproduct(HttpSession session){
+        User user=(User)session.getAttribute(Const.CURRENT_USER);
+        if(user==null){
+            return ServiceResponse.createbyerrorcodemessage(ResponseCode.NEED_LOGIN.getcode(),ResponseCode.NEED_LOGIN.getdesc());
+        }
+        return iOrderService.getordercheckproduct(user.getId());
+    }
+    @RequestMapping("detail.do")
+    @ResponseBody
+    public ServiceResponse detail(HttpSession session,Long orderno){
+        User user=(User)session.getAttribute(Const.CURRENT_USER);
+        if(user==null){
+            return ServiceResponse.createbyerrorcodemessage(ResponseCode.NEED_LOGIN.getcode(),ResponseCode.NEED_LOGIN.getdesc());
+        }
+        return iOrderService.getOrderdetail(user.getId(),orderno);
+    }
+    @RequestMapping("list.do")
+    @ResponseBody
+    public ServiceResponse orderlist(HttpSession session,@RequestParam(value = "pagenum",defaultValue = "1") int pagenum,
+                                     @RequestParam(value = "pagesize",defaultValue = "10")int pagesize){
+        User user=(User)session.getAttribute(Const.CURRENT_USER);
+        if(user==null){
+            return ServiceResponse.createbyerrorcodemessage(ResponseCode.NEED_LOGIN.getcode(),ResponseCode.NEED_LOGIN.getdesc());
+        }
+        return iOrderService.orderlist(user.getId(),pagenum,pagesize);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @RequestMapping("pay.do")
     @ResponseBody
@@ -93,5 +168,7 @@ public class OrderController {
             return ServiceResponse.createbysuccess(false);
         }
     }
+
+
 
 }
